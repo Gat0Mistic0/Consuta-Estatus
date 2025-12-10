@@ -7,9 +7,13 @@ st.set_page_config(page_title="Rastreo de Pedidos", page_icon="📦")
 st.title("📦 Consulta el estado de tu pedido")
 st.markdown("Ingresa tu número de ticket (columna 'Id') para ver el progreso.")
 
-# 2. Conexión a Google Sheets (usando el worksheet "Ticket")
+# 2. Conexión a Google Sheets
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="Ticket", ttl=0) 
+
+# 2a. Leer la tabla principal de Pedidos
+df_pedidos = conn.read(worksheet="Ticket", ttl=0) 
+
+# --- NUEVO: UNIÓN DE DATOS (JOIN) ---
 
 try:
     # 2b. Leer la tabla de Clientes (de la pestaña "Clientes")
@@ -21,8 +25,8 @@ try:
     df_merged = pd.merge(
         df_pedidos, 
         # Seleccionamos solo las columnas necesarias de Clientes
-        df_clientes[['Cliente', 'Nombre']], 
-        on='Cliente', 
+        df_clientes[['IdCliente', 'Nombre']], 
+        on='IdCliente', 
         how='left' # Usamos left join para mantener todos los pedidos
     )
 except Exception as e:
@@ -31,16 +35,14 @@ except Exception as e:
     st.warning("⚠️ Error al cargar la tabla de 'Clientes'. Se mostrará solo el ID de cliente.")
     df_merged = df_pedidos
 
-# 3. Componente de entrada de datos
+# 3. Componente de entrada de datos (el filtro se aplica sobre df_merged)
 ticket_input = st.text_input("Número de Ticket", placeholder="Ej: 1234")
-
 
 if ticket_input:
     ticket = str(ticket_input).strip()
     
-    # 4. Filtramos la información. ¡USAMOS 'Id' COMO CLAVE DE BÚSQUEDA!
-    # El nombre de la columna 'Id' DEBE coincidir con la capitalización exacta.
-    pedido = df[df['Id'].astype(str) == ticket]
+    # 4. Filtramos el DataFrame MERGED usando 'Id'
+    pedido = df_merged[df_merged['Id'].astype(str) == ticket]
     
     if not pedido.empty:
         info = pedido.iloc[0] 
