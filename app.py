@@ -18,7 +18,7 @@ df_pedidos = conn.read(worksheet="Ticket", ttl=0)
 try:
     # 2b. Leer la tabla de Clientes (de la pestaña "Clientes")
     # Si la pestaña se llama diferente, cambia "Clientes"
-    df_clientes = conn.read(worksheet="Cliente", ttl=0)
+    df_clientes = conn.read(worksheet="Clientes", ttl=0)
     
     # 2c. Realizar la unión de las dos tablas (JOIN)
     # Unimos usando 'IdCliente' de ambas tablas. La nueva columna 'Nombre' (real) se añade a los pedidos.
