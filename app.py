@@ -26,8 +26,9 @@ try:
         df_pedidos, 
         # Seleccionamos solo las columnas necesarias de Clientes
         df_clientes[['ID', 'Nombre']], 
-        on='ID', 
-        how='left' # Usamos left join para mantener todos los pedidos
+        left_on='Cliente',             # La clave en la tabla Pedidos es 'Cliente'
+        right_on='ID',                 # La clave en la tabla Clientes es 'ID'
+        how='left'
     )
 except Exception as e:
     # Si la unión falla (por ejemplo, si la hoja "Clientes" no existe), usamos solo la tabla de pedidos
