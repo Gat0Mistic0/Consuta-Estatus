@@ -21,8 +21,8 @@ try:
     df_merged = pd.merge(
         df_pedidos, 
         # Seleccionamos solo las columnas necesarias de Clientes
-        df_clientes[['IdCliente', 'Nombre']], 
-        on='IdCliente', 
+        df_clientes[['Cliente', 'Nombre']], 
+        on='Cliente', 
         how='left' # Usamos left join para mantener todos los pedidos
     )
 except Exception as e:
