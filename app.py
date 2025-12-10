@@ -13,6 +13,20 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 # 2a. Leer la tabla principal de Pedidos
 df_pedidos = conn.read(worksheet="Ticket", ttl=0) 
 
+# 🚨 NUEVO BLOQUE: Limpieza y Formato de Fechas 🚨
+date_columns = ['Hora', 'Fecha empaquetado', 'Fecha entrega']
+
+for col in date_columns:
+    if col in df_pedidos.columns:
+        # 1. Convierte la columna a string (para manejar celdas vacías o nulas)
+        # 2. Usa .str.split() para dividir en el primer espacio (entre fecha y hora)
+        # 3. Toma la primera parte [0], que es la fecha
+        df_pedidos[col] = df_pedidos[col].astype(str).str.split(' ').str[0]
+        
+        # Opcional: Si el valor es 'NaT' o 'nan' (por celdas vacías), lo reemplazamos
+        df_pedidos[col] = df_pedidos[col].replace({'NaT': 'Pendiente', 'nan': 'Pendiente'})
+# ----------------------------------------------------
+
 # --- NUEVO: UNIÓN DE DATOS (JOIN) ---
 
 try:
@@ -69,7 +83,7 @@ if ticket_input:
         col1, col2, col3 = st.columns(3)
         
         # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
-        col1.metric("📦 Cargado", str(info['Cargado']))
+        col1.metric("📦 Cargado", str(info['Hora']))
         col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
         col3.metric("🏠 Entrega (Tentativa/Real)", str(info['Fecha entrega']))
 
