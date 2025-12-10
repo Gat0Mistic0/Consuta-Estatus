@@ -11,8 +11,29 @@ st.markdown("Ingresa tu número de ticket (columna 'Id') para ver el progreso.")
 conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(worksheet="Ticket", ttl=0) 
 
+try:
+    # 2b. Leer la tabla de Clientes (de la pestaña "Clientes")
+    # Si la pestaña se llama diferente, cambia "Clientes"
+    df_clientes = conn.read(worksheet="Clientes", ttl=0)
+    
+    # 2c. Realizar la unión de las dos tablas (JOIN)
+    # Unimos usando 'IdCliente' de ambas tablas. La nueva columna 'Nombre' (real) se añade a los pedidos.
+    df_merged = pd.merge(
+        df_pedidos, 
+        # Seleccionamos solo las columnas necesarias de Clientes
+        df_clientes[['IdCliente', 'Nombre']], 
+        on='IdCliente', 
+        how='left' # Usamos left join para mantener todos los pedidos
+    )
+except Exception as e:
+    # Si la unión falla (por ejemplo, si la hoja "Clientes" no existe), usamos solo la tabla de pedidos
+    # y el campo 'Cliente' mostrará el ID
+    st.warning("⚠️ Error al cargar la tabla de 'Clientes'. Se mostrará solo el ID de cliente.")
+    df_merged = df_pedidos
+
 # 3. Componente de entrada de datos
 ticket_input = st.text_input("Número de Ticket", placeholder="Ej: 1234")
+
 
 if ticket_input:
     ticket = str(ticket_input).strip()
@@ -24,12 +45,17 @@ if ticket_input:
     if not pedido.empty:
         info = pedido.iloc[0] 
         
-        st.success(f"¡Pedido encontrado para: **{info['Cliente']}**!")
+        # 5. MOSTRAR EL NOMBRE REAL DEL CLIENTE
+        # Usamos .get('Nombre', ...) para asegurar que si la columna 'Nombre' no se creó (por el error anterior),
+        # se muestre el ID de la columna 'Cliente' como alternativa.
+        nombre_cliente = info.get('Nombre', info['Cliente'])
+
+        st.success(f"¡Pedido encontrado para: **{nombre_cliente}**!")
         
         # Usamos la columna 'Estado Orden'
-        st.subheader(f"Estado Actual: **{info['Estado']}**")
+        st.subheader(f"Estado Actual: **{info['Estado Orden']}**")
         
-        # Información adicional usando las columnas exactas (con espacio)
+        # Información adicional usando las columnas exactas
         st.markdown(f"**Repartidor Asignado:** {info['Repartidor']}")
         st.markdown(f"**Dirección de Entrega:** {info['Direccion']}")
         
