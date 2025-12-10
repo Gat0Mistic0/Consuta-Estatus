@@ -25,14 +25,14 @@ try:
     df_merged = pd.merge(
         df_pedidos, 
         # Seleccionamos solo las columnas necesarias de Clientes
-        df_clientes[['IdCliente', 'Nombre']], 
-        on='IdCliente', 
+        df_clientes[['Cliente', 'Nombre']], 
+        on='Cliente', 
         how='left' # Usamos left join para mantener todos los pedidos
     )
 except Exception as e:
     # Si la unión falla (por ejemplo, si la hoja "Clientes" no existe), usamos solo la tabla de pedidos
     # y el campo 'Cliente' mostrará el ID
-    st.warning("⚠️ Error al cargar la tabla de 'Clientes'. Se mostrará solo el ID de cliente.")
+    st.warning("⚠️ Error al cargar la tabla de 'Cliente'. Se mostrará solo el ID de cliente.")
     df_merged = df_pedidos
 
 # 3. Componente de entrada de datos (el filtro se aplica sobre df_merged)
