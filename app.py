@@ -73,6 +73,15 @@ if ticket_input:
         st.subheader(f"Estado Actual: **{info['Estado']}**")
         
         # Información adicional usando las columnas exactas
+        match info['Estado']:
+            case 'Cargado':
+                st.markdown(f"**Ya tenemos tu pedido, estamos trabajando en armarlo**")
+            case 'Empacado':
+                st.markdown(f"**Tu pedido ya esta armado, esta esperando a ser embarcado para llegar a tus brazos**")
+            case 'Enrutado':
+                st.markdown(f"**Ya casi llega!!! tu pedido va en camino**")
+            case 'Entregado':
+                st.markdown(f"**En hora buena, tu pedido ya esta en casa**")
         st.markdown(f"**Repartidor Asignado:** {info['Repartidor']}")
         st.markdown(f"**Dirección de Entrega:** {info['Direccion']}")
         
