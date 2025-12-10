@@ -55,7 +55,7 @@ if ticket_input:
         st.success(f"¡Pedido encontrado para: **{nombre_cliente}**!")
         
         # Usamos la columna 'Estado Orden'
-        st.subheader(f"Estado Actual: **{info['Estado Orden']}**")
+        st.subheader(f"Estado Actual: **{info['Estado']}**")
         
         # Información adicional usando las columnas exactas
         st.markdown(f"**Repartidor Asignado:** {info['Repartidor']}")
