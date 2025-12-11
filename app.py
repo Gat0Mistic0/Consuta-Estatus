@@ -101,6 +101,7 @@ if ticket_input:
                 col1, col2, col3 = st.columns(3)
                 col1.metric("📦 Cargado", format_date(info['Hora']))
                 col2.metric("🎁 Empaquetado", format_date(info['Fecha empaquetado']))
-                col3.metric("🏠 Entrega (Tentativa)", format_date(info['Fecha entrega']))
+                col3.metric("🏠 Entregado", format_date(info['Fecha entrega']))
     else:
         st.error(f"❌ No encontramos un pedido con el ticket **{ticket}**. Por favor verifica.")
+        st.image("https://media.tenor.com/dSm453C9gFwAAAAi/cat-see-you.gif", width=300)
