@@ -7,7 +7,7 @@ def format_date(value):
         return value
     try:
         dt = pd.to_datetime(value)
-        return dt.strftime('%d/%m/%Y')
+        return dt.strftime('%m/%d/%Y')
     except:
         return str(value)
 
