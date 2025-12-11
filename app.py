@@ -76,25 +76,55 @@ if ticket_input:
         match info['Estado']:
             case 'Cargado':
                 st.markdown(f"**Ya tenemos tu pedido, estamos trabajando en armarlo**")
+                st.divider()
+                st.subheader("Historial de Fechas")
+                
+                # 5. Muestra el historial de fechas
+                col1, col2, col3 = st.columns(3)
+                    
+                # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
+                col1.metric("📦 Cargado", str(info['Hora']))
+                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']+1))
             case 'Empacado':
                 st.markdown(f"**Tu pedido ya esta armado, esta esperando a ser embarcado para llegar a tus brazos**")
+                st.divider()
+                st.subheader("Historial de Fechas")
+            
+                # 5. Muestra el historial de fechas
+                col1, col2, col3 = st.columns(3)
+            
+                # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
+                col1.metric("📦 Cargado", str(info['Hora']))
+                col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
+                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']+1))
             case 'Enrutado':
                 st.markdown(f"**Ya casi llega!!! tu pedido va en camino**")
+                st.divider()
+                st.subheader("Historial de Fechas")
+            
+                # 5. Muestra el historial de fechas
+                col1, col2, col3 = st.columns(3)
+            
+                # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
+                col1.metric("📦 Cargado", str(info['Hora']))
+                col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
+                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']))
             case 'Entregado':
                 st.markdown(f"**En hora buena, tu pedido ya esta en casa**")
-        st.markdown(f"**Repartidor Asignado:** {info['Repartidor']}")
-        st.markdown(f"**Dirección de Entrega:** {info['Direccion']}")
+                st.divider()
+                st.subheader("Historial de Fechas")
+            
+                # 5. Muestra el historial de fechas
+                col1, col2, col3 = st.columns(3)
+            
+                # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
+                col1.metric("📦 Cargado", str(info['Hora']))
+                col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
+                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']))
+        #st.markdown(f"**Repartidor Asignado:** {info['Repartidor']}")
+        #st.markdown(f"**Dirección de Entrega:** {info['Direccion']}")
         
-        st.divider()
-        st.subheader("Historial de Fechas")
         
-        # 5. Muestra el historial de fechas
-        col1, col2, col3 = st.columns(3)
-        
-        # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
-        col1.metric("📦 Cargado", str(info['Hora']))
-        col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
-        col3.metric("🏠 Entrega (Tentativa/Real)", str(info['Fecha entrega']))
 
     else:
         st.error(f"❌ No encontramos un pedido con el ticket **{ticket}**. Por favor verifica.")
