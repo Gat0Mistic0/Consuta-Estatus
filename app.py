@@ -104,4 +104,20 @@ if ticket_input:
                 col3.metric("🏠 Entregado", format_date(info['Fecha entrega']))
     else:
         st.error(f"❌ No encontramos un pedido con el ticket **{ticket}**. Por favor verifica.")
-        st.image("https://media.tenor.com/dSm453C9gFwAAAAi/cat-see-you.gif", width=300)
+        gif_url = "https://media.tenor.com/dSm453C9gFwAAAAi/cat-see-you.gif"
+        st.markdown(
+            f"""
+            <div style='text-align: center;'>
+                <p style='color: red; font-size: 18px;'>❌ No encontramos un pedido con el ticket <b>{ticket}</b>. Por favor verifica.</p>
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
+        
+        # Streamlit no centra st.image() directamente, así que usamos un truco:
+        # 1. Creamos una columna central.
+        col1, col2, col3 = st.columns([1, 2, 1]) # Ejemplo: 1 (espacio), 2 (GIF), 1 (espacio)
+        
+        # 2. Mostramos la imagen en la columna central
+        with col2:
+            st.image(gif_url, width=300)
