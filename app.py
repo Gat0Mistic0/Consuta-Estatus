@@ -59,8 +59,26 @@ except Exception as e:
     st.warning("⚠️ Error al cargar la tabla de 'Cliente'. Se mostrará solo el ID de cliente.")
     df_merged = df_pedidos
 
-# 3. Componente de entrada de datos (el filtro se aplica sobre df_merged)
-ticket_input = st.text_input("Número de Ticket", placeholder="Ej: 1234")
+# 3. Componente de entrada de datos (Input) y Botón de Limpieza
+
+# Usamos st.empty() y st.columns para colocar el botón junto al input
+col_input, col_button = st.columns([0.8, 0.2]) # 80% para el input, 20% para el botón
+
+# Creamos el campo de texto DENTRO de la primera columna
+ticket_input = col_input.text_input("Número de Ticket", placeholder="Ej: 1234", key="ticket_key")
+
+# Creamos el botón DENTRO de la segunda columna
+# Usamos un espacio en blanco ('') como etiqueta del input para alinearlo
+# Añadimos un salto de línea con st.markdown para bajar el botón al nivel del input
+col_button.markdown('<br>', unsafe_allow_html=True) 
+
+# El botón de limpiar se usa para determinar si la aplicación debe reiniciarse sin el valor de búsqueda
+if col_button.button("🗑️ Limpiar", type="secondary"):
+    # Si se hace clic en 'Limpiar', Streamlit se reinicia con el input vacío
+    st.session_state.ticket_key = "" # Borra el valor guardado en el estado de la sesión
+    st.rerun()           # Fuerza el reinicio de la app para aplicar el cambio
+
+# NOTA: Usamos 'ticket_key' como una clave persistente para que el botón pueda manipular el valor.
 
 if ticket_input:
     ticket = str(ticket_input).strip()
