@@ -84,7 +84,12 @@ if ticket_input:
                     
                 # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
                 col1.metric("📦 Cargado", str(info['Hora']))
-                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']+1))
+                try:
+                    fecha_entrega = pd.to_datetime(info['Fecha entrega'])
+                    fecha_entrega_plus_1 = fecha_entrega + pd.Timedelta(days=1)
+                    col3.metric("🏠 Entrega (Tentativa)", str(fecha_entrega_plus_1.date()))
+                except:
+                    col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']))
             case 'Empacado':
                 st.markdown(f"**Tu pedido ya esta armado, esta esperando a ser embarcado para llegar a tus brazos**")
                 st.divider()
@@ -96,7 +101,12 @@ if ticket_input:
                 # Usamos los nombres de columna exactos: 'Cargado', 'Fecha empaquetado', 'Fecha entrega'
                 col1.metric("📦 Cargado", str(info['Hora']))
                 col2.metric("🎁 Empaquetado", str(info['Fecha empaquetado']))
-                col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']+1))
+                try:
+                    fecha_entrega = pd.to_datetime(info['Fecha entrega'])
+                    fecha_entrega_plus_1 = fecha_entrega + pd.Timedelta(days=1)
+                    col3.metric("🏠 Entrega (Tentativa)", str(fecha_entrega_plus_1.date()))
+                except:
+                    col3.metric("🏠 Entrega (Tentativa)", str(info['Fecha entrega']))
             case 'Enrutado':
                 st.markdown(f"**Ya casi llega!!! tu pedido va en camino**")
                 st.divider()
@@ -113,7 +123,6 @@ if ticket_input:
                 st.markdown(f"**En hora buena, tu pedido ya esta en casa**")
                 st.divider()
                 st.subheader("Historial de Fechas")
-            
                 # 5. Muestra el historial de fechas
                 col1, col2, col3 = st.columns(3)
             
