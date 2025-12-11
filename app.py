@@ -105,14 +105,14 @@ if ticket_input:
     else:
         st.error(f"❌ No encontramos un pedido con el ticket **{ticket}**. Por favor verifica.")
         gif_url = "https://media.tenor.com/dSm453C9gFwAAAAi/cat-see-you.gif"
-        st.markdown(
-            f"""
-            <div style='text-align: center;'>
-                <p style='color: red; font-size: 18px;'>❌ No encontramos un pedido con el ticket <b>{ticket}</b>. Por favor verifica.</p>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
+        #st.markdown(
+        #    f"""
+        #    <div style='text-align: center;'>
+        #        <p style='color: red; font-size: 18px;'>❌ No encontramos un pedido con el ticket <b>{ticket}</b>. Por favor verifica.</p>
+        #    </div>
+        #    """, 
+        #    unsafe_allow_html=True
+        #)
         
         # Streamlit no centra st.image() directamente, así que usamos un truco:
         # 1. Creamos una columna central.
