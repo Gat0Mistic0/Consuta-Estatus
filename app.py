@@ -6,8 +6,8 @@ def format_date(value):
     if value == 'Pendiente':
         return value
     try:
-        dt = pd.to_datetime(value)
-        return dt.strftime('%m/%d/%Y')
+        dt = pd.to_datetime(value, dayfirst=True)
+        return dt.strftime('%d/%m/%Y')
     except:
         return str(value)
 
@@ -68,7 +68,7 @@ if ticket_input:
                 col1, col2, col3 = st.columns(3)
                 col1.metric("📦 Cargado", format_date(info['Hora']))
                 try:
-                    fecha_entrega = pd.to_datetime(info['Fecha entrega'])
+                    fecha_entrega = pd.to_datetime(info['Fecha entrega'], dayfirst=True)
                     fecha_entrega_plus_1 = fecha_entrega + pd.Timedelta(days=1)
                     col3.metric("🏠 Entrega (Tentativa)", fecha_entrega_plus_1.strftime('%d/%m/%Y'))
                 except:
@@ -81,7 +81,7 @@ if ticket_input:
                 col1.metric("📦 Cargado", format_date(info['Hora']))
                 col2.metric("🎁 Empaquetado", format_date(info['Fecha empaquetado']))
                 try:
-                    fecha_entrega = pd.to_datetime(info['Fecha entrega'])
+                    fecha_entrega = pd.to_datetime(info['Fecha entrega'], dayfirst=True)
                     fecha_entrega_plus_1 = fecha_entrega + pd.Timedelta(days=1)
                     col3.metric("🏠 Entrega (Tentativa)", fecha_entrega_plus_1.strftime('%d/%m/%Y'))
                 except:
